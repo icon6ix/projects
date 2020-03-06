@@ -1,0 +1,177 @@
+
+#Makes the dev folders adds them to your quick acess, renames R&L checklist
+
+$Host.UI.RawUI.WindowTitle = 'Dev folder creator'
+$Year = (Get-Date).Year
+
+#Main
+Do {
+    "Please enter the following details and press ENTER to confirm"
+    ""
+    $Customer = Read-Host -Prompt 'Customers full name'
+    $Proper = (Get-Culture).TextInfo.ToTitleCase($Customer)
+    $ID = Read-Host -Prompt 'Dev ID'
+    $Title = Read-Host -Prompt 'Summary of Dev'
+    $Folder = "$ID - " + (Get-Culture).TextInfo.ToTitleCase($Title)
+   
+    if ($Customer.Substring(0,1) -match "^\d+")
+        {$Location = "D:\dev files\0-9\" + $Customer.Substring(0, 1) +"\"}
+    else {$Location = "D:\dev files\" + $Proper.Substring(0,1) + "\"}
+    cls
+
+    if (-not (Test-Path -Path "$Location$Proper")) #Check to see if there is a customer folder already and makes it if not
+    {
+        md "$Location$Proper"
+        md "$Location$Proper\$Year"
+        md "$Location$Proper\$Year\$Folder"
+        md "$Location$Proper\$Year\$Folder\Images"
+        md "$Location$Proper\$Year\$Folder\WIP"
+        md "$Location$Proper\$Year\$Folder\Data"
+
+        #renames the checklist
+        $Doc1 = "$Home\Documents\Dev creator\R&L Checklist Template.docx"
+        $DocReplaceCL = "$Location$Proper\$Year\$Folder\R&L Checklist $Folder.docx"
+        Copy-Item -Path $Doc1 -Destination $DocReplaceCL
+
+        #renames the techspec
+        $Doc2 = "$Home\Documents\Dev creator\R&L Techspec Template.docx"
+        $DocReplaceTS = "$Location$Proper\$Year\$Folder\R&L Techspec $Folder.docx"
+        Copy-Item -Path $Doc2 -Destination $DocReplaceTS
+
+        #Updates the checklist to have the dev id in it
+        #$Word = new-object -ComObject "Word.Application"
+        #$Word.Visible = $false
+        #$Word.Documents.Open($Doc1)
+        #$Word.Selection.Find.Text = "#DevID"
+        #if ($Word.Selection.Find.Execute()) {$Word.Selection.Text = $Folder}
+        #$Word.ActiveDocument.saveas("test.docx")
+        #$Word.Application.Quit()
+
+        #Updates the techspec to have the dev id in it
+        #$Word = new-object -ComObject "Word.Application"
+        #$Word.Visible = $false
+        #$Word.Documents.Open($Doc2)
+        #$Word.Selection.Find.Text = "#DevID"
+        #if ($Word.Selection.Find.Execute()) {$Word.Selection.Text = $Folder}
+        #$Word.ActiveDocument.saveas("test.docx")
+        #$Word.Application.Quit()
+
+        cls
+        $o = new-object -com shell.application
+        $o.Namespace("$Location$Proper\$Year\$Folder").Self.InvokeVerb("pintohome")
+        "Directory: $Proper and folders, $Year and $Folder has been created and added to quick access menu."
+        Start-Sleep -s 2
+        cls
+       
+        $Choices  = '&Yes', '&No'
+        $Decision = $Host.UI.PromptForChoice("R&L Tech Spec", 'Would you like to do this now?', $Choices, -1)
+        if ($Decision -eq 0) {
+                                $Word.documents.open($Filename)
+                                cls
+                                }
+    }
+
+    elseif (-not (Test-Path -Path "$Location$Proper\$Year")) #Checks to see if there is a folder for the year of the dev and makes it if not
+        {            
+            md "$Location$Proper\$Year"
+            md "$Location$Proper\$Year\$Folder"
+            md "$Location$Proper\$Year\$Folder\Images"
+            md "$Location$Proper\$Year\$Folder\WIP"
+            md "$Location$Proper\$Year\$Folder\Data"
+
+            #renames the checklist
+            $Doc1 = "$Home\Documents\Dev creator\R&L Checklist Template.docx"
+            $DocReplaceCL = "$Location$Proper\$Year\$Folder\R&L Checklist $Folder.docx"
+            Copy-Item -Path $Doc1 -Destination $DocReplaceCL
+
+            #renames the techspec
+            $Doc2 = "$Home\Documents\Dev creator\R&L Techspec Template.docx"
+            $DocReplaceTS = "$Location$Proper\$Year\$Folder\R&L Techspec $Folder.docx"
+            Copy-Item -Path $Doc2 -Destination $DocReplaceTS
+
+            #Updates the checklist to have the dev id in it
+            #$Word = new-object -ComObject "Word.Application"
+            #$Word.Visible = $false
+            #$Word.Documents.Open($Doc1)
+            #$Word.Selection.Find.Text = "#DevID"
+            #if ($Word.Selection.Find.Execute()) {$Word.Selection.Text = $Folder}
+            #$Word.ActiveDocument.saveas("test.docx")
+            #$Word.Application.Quit()
+
+            #Updates the techspec to have the dev id in it
+            #$Word = new-object -ComObject "Word.Application"
+            #$Word.Visible = $false
+            #$Word.Documents.Open($Doc2)
+            #$Word.Selection.Find.Text = "#DevID"
+            #if ($Word.Selection.Find.Execute()) {$Word.Selection.Text = $Folder}
+            #$Word.ActiveDocument.saveas("test.docx")
+            #$Word.Application.Quit()
+
+            cls
+            $o = new-object -com shell.application
+            $o.Namespace("$Location$Proper\$Year\$Folder").Self.InvokeVerb("pintohome")
+            "Folder: $Year and $Folder, has been created for $Proper and added to quick access menu."
+            Start-Sleep -s 2                
+        }
+    else
+    {
+        if (-not (Test-Path -Path "$Location$Proper\$Year\$Folder")) #Checks to see if there is a folder for for the dev and makes it if not
+        {            
+            md "$Location$Proper\$Year\$Folder"
+            md "$Location$Proper\$Year\$Folder\Images"
+            md "$Location$Proper\$Year\$Folder\WIP"
+            md "$Location$Proper\$Year\$Folder\Data"
+
+            #renames the checklist
+            $Doc1 = "$Home\Documents\Dev creator\R&L Checklist Template.docx"
+            $DocReplaceCL = "$Location$Proper\$Year\$Folder\R&L Checklist $Folder.docx"
+            Copy-Item -Path $Doc1 -Destination $DocReplaceCL
+
+            #renames the techspec
+            $Doc2 = "$Home\Documents\Dev creator\R&L Techspec Template.docx"
+            $DocReplaceTS = "$Location$Proper\$Year\$Folder\R&L Techspec $Folder.docx"
+            Copy-Item -Path $Doc2 -Destination $DocReplaceTS
+
+            #Updates the checklist to have the dev id in it
+            #$Word = new-object -ComObject "Word.Application"
+            #$Word.Visible = $false
+            #$Word.Documents.Open($Doc1)
+            #$Word.Selection.Find.Text = "#DevID"
+            #if ($Word.Selection.Find.Execute()) {$Word.Selection.Text = $Folder}
+            #$Word.ActiveDocument.saveas("test.docx")
+            #$Word.Application.Quit()
+
+            #Updates the techspec to have the dev id in it
+            #$Word = new-object -ComObject "Word.Application"
+            #$Word.Visible = $false
+            #$Word.Documents.Open($Doc2)
+            #$Word.Selection.Find.Text = "#DevID"
+            #if ($Word.Selection.Find.Execute()) {$Word.Selection.Text = $Folder}
+            #$Word.ActiveDocument.saveas("test.docx")
+            #$Word.Application.Quit()
+
+            cls
+            $o = new-object -com shell.application
+            $o.Namespace("$Location$Proper\$Year\$Folder").Self.InvokeVerb("pintohome")
+            "Folder: $Folder, has been created for $Proper and added to quick access menu."
+            Start-Sleep -s 2                
+        }
+
+        else
+        {
+        cls
+        $Choices  = '&Yes', '&No'
+        $Decision = $Host.UI.PromptForChoice("Folder: $Folder for $Proper, already exists", 'Would you like to try again?', $Choices, -1)
+        if ($Decision -eq 0) {
+                                $Folder = $null
+                                cls
+        } else
+            {
+            break
+            }                                  
+        }
+    }
+}
+While ($Folder -eq $null)
+#add calender entry to delete backups after 4 weeks
+#download all the attachments and add to data folder
